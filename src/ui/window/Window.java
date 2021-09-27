@@ -9,10 +9,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import javax.swing.*;
 
-/**
- * Creates a user interface with a JFrame where all the processes and results will be shown to the user
- */
+
 public class Window extends JFrame {
+    Thread thread;
     //MAIN PANEL
     private JPanel mainPanel;
     private JButton buttonShowLog;
@@ -402,21 +401,27 @@ public class Window extends JFrame {
         }
 
         sortButtons[0].addActionListener(e -> {
-            long start = System.currentTimeMillis();
-            log.selectSort();
-            long finish = System.currentTimeMillis();
-            log.reset();
-            long deltaTime = finish - start;
-            timeLabels[0].setText(deltaTime + " ms");
+            thread = new Thread(() -> {
+                long start = System.currentTimeMillis();
+                log.selectSort();
+                long finish = System.currentTimeMillis();
+                log.reset();
+                long deltaTime = finish - start;
+                timeLabels[0].setText(deltaTime + " ms");
+            });
+            thread.start();
         });
 
         sortButtons[1].addActionListener(e -> {
-            long start = System.currentTimeMillis();
-            log.insertionSort();
-            long finish = System.currentTimeMillis();
-            log.reset();
-            long deltaTime = finish - start;
-            timeLabels[1].setText(deltaTime + " ms");
+            thread = new Thread(() -> {
+                long start = System.currentTimeMillis();
+                log.insertionSort();
+                long finish = System.currentTimeMillis();
+                log.reset();
+                long deltaTime = finish - start;
+                timeLabels[1].setText(deltaTime + " ms");
+            });
+            thread.start();
         });
 
         sortButtons[2].addActionListener(e -> {
